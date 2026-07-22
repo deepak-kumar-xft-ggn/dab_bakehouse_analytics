@@ -9,13 +9,15 @@ concurrency:
   cancel-in-progress: true
 
 # Trigger this workflow whenever a push is made to the repo's main branch
-# and the change touches files under bakehouse_analytics/**.
+# and the change touches files under bakehouse_analytics/**. Also allow
+# manual runs from the Actions UI via workflow_dispatch.
 on:
   push:
     branches:
       - main
     paths:
       - 'bakehouse_analytics/**'
+  workflow_dispatch:
 
 jobs:
   deploy:
