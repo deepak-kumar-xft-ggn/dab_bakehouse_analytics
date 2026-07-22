@@ -4,10 +4,12 @@ name: 'Production deployment'
 
 # Ensure that only a single job or workflow using the same concurrency group
 # runs at a time.
-concurrency: 1
+concurrency:
+  group: prod-deploy
+  cancel-in-progress: true
 
-# Trigger this workflow whenever a pull request is pushed to the repo's
-# main branch.
+# Trigger this workflow whenever a push is made to the repo's main branch
+# and the change touches files under bakehouse_analytics/**.
 on:
   push:
     branches:
@@ -31,7 +33,7 @@ jobs:
       # Deploy the bundle to the "prod" target as defined
       # in the bundle's settings file.
       - run: databricks bundle deploy
-        working-directory: bakehosue_analytics
+        working-directory: bakehouse_analytics
         env:
           DATABRICKS_TOKEN: ${{ secrets.SP_TOKEN }}
           DATABRICKS_BUNDLE_ENV: prod
